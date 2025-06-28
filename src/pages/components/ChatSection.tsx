@@ -103,7 +103,9 @@ function renderFormattedText(text: string) {
 }
 
 const ChatSection = () => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { role: "assistant", content: "Hello! How can I help you today?" },
+  ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
