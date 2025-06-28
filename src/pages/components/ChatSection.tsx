@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 const BotAvatar = () => (
-  <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
+  <div className="w-10 h-10 rounded-full bg-blue-600 dark:bg-blue-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
     <svg
       className="w-6 h-6"
       fill="none"
@@ -15,7 +15,7 @@ const BotAvatar = () => (
   </div>
 );
 const UserAvatar = () => (
-  <div className="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white font-bold text-xl shadow-md">
+  <div className="w-10 h-10 rounded-full bg-gray-400 dark:bg-gray-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
     <svg
       className="w-6 h-6"
       fill="none"
@@ -44,7 +44,10 @@ const SendIcon = () => (
   </svg>
 );
 const Spinner = () => (
-  <svg className="animate-spin h-6 w-6 text-blue-600" viewBox="0 0 24 24">
+  <svg
+    className="animate-spin h-6 w-6 text-blue-600 dark:text-blue-400"
+    viewBox="0 0 24 24"
+  >
     <circle
       className="opacity-25"
       cx="12"
@@ -79,7 +82,7 @@ function renderFormattedText(text: string) {
   // Headings
   text = text.replace(
     /### (.*)/g,
-    '<h3 class="font-semibold text-base mt-3 mb-1">$1</h3>'
+    '<h3 class="font-semibold text-base mt-3 mb-1 text-gray-900 dark:text-gray-100">$1</h3>'
   );
   text = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
   // Bullets
@@ -89,7 +92,10 @@ function renderFormattedText(text: string) {
     '<ul class="list-disc ml-6">$&</ul>'
   );
   // Horizontal rules
-  text = text.replace(/---/g, '<hr class="my-2" />');
+  text = text.replace(
+    /---/g,
+    '<hr class="my-2 border-gray-200 dark:border-gray-600" />'
+  );
   // Paragraphs
   text = text.replace(/\n{2,}/g, "</p><p>");
   text = "<p>" + text + "</p>";
@@ -136,10 +142,6 @@ const ChatSection = () => {
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder("utf-8");
-      console.log({
-        reader,
-        decoder,
-      });
 
       if (!reader) throw new Error("No reader found on response body");
       let result = "";
@@ -180,13 +182,17 @@ const ChatSection = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gradient-to-br from-gray-100 to-blue-50 rounded-2xl shadow-lg overflow-hidden">
+    <div className="flex flex-col h-full bg-gradient-to-br from-gray-100 to-blue-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="flex items-center gap-4 px-8 py-5 border-b border-gray-200 bg-white/80 backdrop-blur-md">
+      <div className="flex items-center gap-4 px-8 py-5 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md">
         <BotAvatar />
         <div>
-          <div className="font-bold text-lg text-gray-900">Mini GPT</div>
-          <div className="text-xs text-gray-500">AI Assistant</div>
+          <div className="font-bold text-lg text-gray-900 dark:text-gray-100">
+            Mini GPT
+          </div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            AI Assistant
+          </div>
         </div>
       </div>
       {/* Message List */}
@@ -200,13 +206,13 @@ const ChatSection = () => {
                 className="flex mb-4 items-end gap-2 transition-all duration-300 justify-start"
               >
                 <BotAvatar />
-                <div className="rounded-2xl px-4 py-2 max-w-[70%] text-base shadow-sm transition-all duration-300 bg-white text-gray-900 border border-gray-200 animate-fade-in">
+                <div className="rounded-2xl px-4 py-2 max-w-[70%] text-base shadow-sm transition-all duration-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-600 animate-fade-in">
                   {think && (
                     <details className="mb-2">
-                      <summary className="text-xs text-gray-400 cursor-pointer select-none">
+                      <summary className="text-xs text-gray-400 dark:text-gray-500 cursor-pointer select-none">
                         AI reasoning (click to expand)
                       </summary>
-                      <div className="text-xs text-gray-400 whitespace-pre-line mt-1">
+                      <div className="text-xs text-gray-400 dark:text-gray-500 whitespace-pre-line mt-1">
                         {think}
                       </div>
                     </details>
@@ -227,7 +233,7 @@ const ChatSection = () => {
               key={idx}
               className="flex mb-4 items-end gap-2 transition-all duration-300 justify-end"
             >
-              <div className="rounded-2xl px-4 py-2 max-w-[70%] text-base shadow-sm transition-all duration-300 bg-blue-600 text-white animate-fade-in">
+              <div className="rounded-2xl px-4 py-2 max-w-[70%] text-base shadow-sm transition-all duration-300 bg-blue-600 dark:bg-blue-500 text-white animate-fade-in">
                 {msg.content}
               </div>
               <UserAvatar />
@@ -240,29 +246,32 @@ const ChatSection = () => {
           messages[messages.length - 1].role === "user" && (
             <div className="flex mb-4 items-end gap-2 justify-start">
               <BotAvatar />
-              <div className="rounded-2xl px-4 py-2 max-w-[70%] text-base shadow-sm bg-white border border-gray-200 flex items-center animate-fade-in">
+              <div className="rounded-2xl px-4 py-2 max-w-[70%] text-base shadow-sm bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 flex items-center animate-fade-in">
                 <Spinner />
-                <span className="ml-2 text-gray-500">Thinking...</span>
+                <span className="ml-2 text-gray-500 dark:text-gray-400">
+                  Thinking...
+                </span>
               </div>
             </div>
           )}
         <div ref={messagesEndRef} />
       </div>
+
       {/* Input Form */}
       <form
         onSubmit={handleSend}
-        className="flex items-center p-4 border-t border-gray-200 bg-white/90 backdrop-blur-md w-full shadow-lg"
+        className="flex items-center p-4 border-t border-gray-200 dark:border-gray-700 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md w-full shadow-lg"
       >
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message..."
-          className="flex-1 px-4 py-3 rounded-lg border border-gray-300 text-base outline-none focus:ring-2 focus:ring-blue-500 bg-white shadow-sm"
+          className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 text-base outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 shadow-sm"
         />
         <button
           type="submit"
-          className="ml-3 px-5 py-3 rounded-lg bg-blue-600 text-white text-base font-medium hover:bg-blue-700 transition duration-200 flex items-center gap-2 shadow-md"
+          className="ml-3 px-5 py-3 rounded-lg bg-blue-600 dark:bg-blue-500 text-white text-base font-medium hover:bg-blue-700 dark:hover:bg-blue-600 transition duration-200 flex items-center gap-2 shadow-md"
           disabled={loading}
         >
           <span className="hidden sm:inline">Send</span>
@@ -281,6 +290,7 @@ const ChatSection = () => {
         .formatted-assistant-message h3 { margin-top: 1em; margin-bottom: 0.5em; }
         .formatted-assistant-message hr { border: none; border-top: 1px solid #e5e7eb; margin: 1em 0; }
         .formatted-assistant-message p { margin: 0.5em 0; }
+        .dark .formatted-assistant-message hr { border-top-color: #4b5563; }
       `}</style>
     </div>
   );

@@ -8,9 +8,9 @@ A modern, lightweight AI chat interface built with React, TypeScript, and Tailwi
 - **Real-time Streaming**: Experience smooth, real-time message streaming
 - **Modern UI**: Beautiful, responsive interface with Tailwind CSS
 - **TypeScript**: Full type safety and better development experience
-- **Collapsible Sidebar**: Clean, space-efficient navigation
 - **Markdown Support**: Basic markdown formatting for AI responses
 - **Think Mode**: Visual representation of AI reasoning process
+- **System Theme Detection**: Automatically detects your system's theme preference
 
 ## 📋 Prerequisites
 
@@ -56,28 +56,33 @@ Before running this project, you need to have the following installed:
    ```
 
 6. **Open your browser**
-   Navigate to `http://localhost:[PORT]`
+   Navigate to `http://localhost:5173`
 
 ## 🎯 Usage
 
 1. **Start Ollama**: Ensure Ollama is running with `ollama serve`
 2. **Launch the app**: Run `npm run dev` and open the browser
 3. **Start chatting**: Type your message and press Enter or click Send
-4. **Enjoy**: The AI will respond with real-time streaming
+4. **Toggle Theme**: Use the theme toggle button in the sidebar (if enabled)
+5. **Enjoy**: The AI will respond with real-time streaming
 
 ## 🏗️ Project Structure
 
 ```
 mini-gpt/
 ├── src/
+│   ├── contexts/
+│   │   └── ThemeContext.tsx      # Dark/light theme management
 │   ├── pages/
 │   │   ├── ChatPage.tsx          # Main chat interface
 │   │   └── components/
 │   │       ├── ChatSection.tsx   # Chat messages and input
-│   │       └── SideBar.tsx       # Navigation sidebar
-│   ├── App.tsx                   # Root component
-│   └── main.tsx                  # Entry point
+│   │       └── SideBar.tsx       # Navigation sidebar (optional)
+│   ├── App.tsx                   # Root component with theme provider
+│   ├── main.tsx                  # Entry point
+│   └── index.css                 # Global styles and Tailwind imports
 ├── public/                       # Static assets
+├── tailwind.config.js            # Tailwind CSS configuration
 └── package.json                  # Dependencies and scripts
 ```
 
@@ -135,6 +140,7 @@ You can use any model available in Ollama. Some popular options:
    - Check firewall settings
 
 3. **Model not found**
+
    - Pull the required model: `ollama pull model-name`
    - Verify model name in the code matches exactly
 
@@ -146,6 +152,7 @@ If you encounter any issues:
 2. Verify Ollama is running and accessible
 3. Ensure the correct model is installed
 4. Check the network tab for API call failures
+5. Try clearing browser cache and localStorage
 
 ---
 
